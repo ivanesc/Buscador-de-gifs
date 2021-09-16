@@ -1,6 +1,10 @@
 import React from 'react'
 import './App.css'
-import ListOfGifs from './components/ListOfGifs'
+import Home from './pages/Home'
+import SearchResults from './pages/SearchResults'
+import Detail from './pages/Detail'
+import Context from './context/StaticContext'
+import { GifsContextProvider } from './context/GifsContext'
 
 import {Link, Route} from "wouter"
 
@@ -14,17 +18,34 @@ import {Link, Route} from "wouter"
 export default function App() {
 
   return (
+    <Context.Provider value={ //esto se usaría por delante del valor que tiene por defecto el StaticContext o si tiene acceso. En caso contrario sería el de StaticContext
+      {
+        name: 'ivan',
+        suscribeteAlCanal: true
+      }
+    }>
     <div className="App">
       <section className="App-content">
-        <h1>App</h1>
-        <Link to='/gif/colombia'> Gifs de colombia </Link>
-        <Link to='/gif/ecuador'> Gifs de ecuador </Link>
-        <Link to='/gif/chile'> Gifs de chile </Link>
-        <Route 
-          path="/gif/:keyword" 
-          component={ListOfGifs} />
+        <Link to="/">
+          <img className="App-logo" alt='Giffy logo' src='/logo.png' />
+        </Link>
+        <GifsContextProvider>
+          <Route
+            component={Home}
+            path="/"
+          />
+          <Route
+            component={SearchResults}
+            path="/search/:keyword"  
+          />  
+          <Route
+            component={Detail}
+            path="/gif/:id"
+          />
+        </GifsContextProvider>
       </section>
     </div>
+    </Context.Provider>
   )
 }
 
